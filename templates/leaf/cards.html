@@ -1,0 +1,20 @@
+{% if elements %}
+<div class="ui cards" style="position: relative; left: 150px; top: -30px;">
+{% for element in elements %}
+   <div class="card">
+      <div class="content">
+         <img class="right floated mini ui image" src="{{ element.img }}">
+         <div class="header">{{ element.title }}</div>
+         <div class="meta">{{ element.quantity }}</div>
+         <div class="description">{{ element.description }}</div>
+      </div>
+      <div class="extra content">
+         <div class="ui two buttons">
+            <div class="ui basic green button">Approve</div>
+            <div class="ui basic red button">Decline</div>
+         </div>
+      </div>
+   </div>
+{% endfor %}
+</div>
+{% endif %}

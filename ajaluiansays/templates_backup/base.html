@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='wow/style-cleaned.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='wow/basics.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='wow/sticky.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='wow/intro.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='side.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bar.css') }}"/>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div class="menu">
+    <div class="search_bar">
+    </div>
+    <div class="title_bar">
+        <div class="num">
+        </div>
+    </div>
+    <div class="logo_bar"></div>
+</div>
+<div class="menu-shadow"></div>
+{% block content %}{% endblock %}
+    <div class="footer" style="float: right">
+        <input style="float: right">
+        <div class="btn" style="float: left">fjeoijo</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+{% block title %} comments {% endblock %}
+{% block body %}
+<div class="ui container">
+
+
+   <div class="ui large comments">
+      <h3 class="ui dividing header">Comments</h3>
+      <div class="comment">
+         <a class="avatar">
+            <img src="https://semantic-ui.com/images/avatar/small/matt.jpg">
+         </a>
+         <div class="content" id="target" onmouseover="display()" onmouseleave="undisplay()"></div>
+         <script id="template" type="text/ractive">
+            <a class="author">Matt</a>
+            <div class="metadata">
+               <span class="date">Today at 5:42PM</span>
+            </div>
+            <div class="metadata" style="position: absolute; right: 0; {{ '{{ display }}' }}">
+               <a class="hide right floated" href="">Hide</a>
+               <a class="inappropriate" href="">Inappropriate</a>
+            </div>
+            <div class="text">
+               How <a class="ui link" href="">Text</a> rtistic!
+               <img class="ui centered medium image" src="https://semantic-ui.com/images/wireframe/image.png">
+            </div>
+            <div class="actions">
+               <a class="reply" onclick="reply()">Reply</a>
+               <a class="like" onclick="like()"><i class="{{ '{{ empty }}' }} heart icon"></i> {{ '{{ like }}' }}</a>
+               <a class="share" onmouseover="socials()" onmouseleave="share()">
+                  {{ '{{{ share }}}' }}
+               </a>
+            </div>
+            {{ '{{{ form }}}' }}
+         </script>
+         <script>
+            var ractive = new Ractive({
+               target: '#target',
+               template: '#template',
+               data: {
+                  like: 'like',
+                  rate: 62,
+                  empty: 'empty',
+                  form: '',
+                  reply_form: '<form class="ui reply form"><div class="field"><textarea></textarea></div><div class="ui primary submit labeled icon button"><i class="icon edit"></i> Add Reply</div></form>',
+                  share: 'Share',
+                  socials: '<a class="facebook"> <i class="twitter icon"></i></a> <a class="facebook"> <i class="facebook square icon"></i></a>',
+                  display: 'display: none;',
+                  hidden_display: 'display: none;',
+               }
+            });
+
+            function like() {
+               var data = ractive.get();
+               if (data['empty'] == 'empty') {
+                  data['empty'] = '';
+                  data['rate'] += 1;
+                  data['like'] = data['rate'];
+               } else {
+                  data['empty'] = 'empty';
+                  data['rate'] -= 1;
+                  data['like'] = data['rate'];
+               }
+
+               ractive.set({
+                  like: data['like'],
+                  rate: data['rate'],
+                  empty: data['empty'],
+               });
+            }
+
+            function reply() {
+               var form = ractive.get('form'), reply_form = ractive.get('reply_form');
+               form = form == '' ? reply_form : '';
+               ractive.set('form', form);
+            }
+
+            function socials() {
+               var share = ractive.get('share'), socials = ractive.get('socials');
+               ractive.set('share', socials);
+            }
+
+            function share() {
+               ractive.set('share', 'Share');
+            }
+
+            function display() {
+               ractive.set('display', '');
+            }
+
+            function undisplay() {
+               var hidden_display = ractive.get('hidden_display');
+               ractive.set('display', hidden_display);
+            }
+
+
+         </script>
+      </div>
+      <div class="comment">
+         <a class="avatar">
+            <img src="https://semantic-ui.com/images/avatar/small/elliot.jpg">
+         </a>
+         <div class="content">
+            <a class="author">Elliot Fu</a>
+            <div class="metadata">
+               <span class="date">Yesterday at 12:30AM</span>
+            </div>
+            <div class="text">
+               <p>This has been very useful for my research. Thanks as well!</p>
+            </div>
+            <div class="actions">
+               <a class="reply">Reply</a>
+            </div>
+         </div>
+         <div class="comments">
+            <div class="comment">
+               <a class="avatar">
+                  <img src="https://semantic-ui.com/images/avatar/small/jenny.jpg">
+               </a>
+               <div class="content">
+                  <a class="author">Jenny Hess</a>
+                  <div class="metadata">
+                     <span class="date">Just now</span>
+                  </div>
+                  <div class="metadata" style="position: absolute; right: 0;">
+                     <a class="hide right floated" href="">Hide</a>
+                     <a class="inappropriate" href="">Inappropriate</a>
+                  </div>
+                  <div class="text">Elliot you are always so right :)</div>
+                  <div class="actions">
+                     <a class="reply">Reply</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="comment">
+         <a class="avatar">
+            <img src="https://semantic-ui.com/images/avatar/small/joe.jpg">
+         </a>
+         <div class="content">
+            <a class="author">Joe Henderson</a>
+            <div class="metadata">
+               <span class="date">5 days ago</span>
+            </div>
+            <div class="text">Dude, this is awesome. Thanks so much</div>
+            <div class="actions">
+               <a class="reply">Reply</a>
+            </div>
+         </div>
+      </div>
+      <form class="ui reply form">
+         <div class="field">
+            <textarea></textarea>
+         </div>
+         <div class="ui blue labeled submit icon button"><i class="icon edit"></i> Add Reply</div>
+      </form>
+   </div>
+
+</div>
+{% endblock %}

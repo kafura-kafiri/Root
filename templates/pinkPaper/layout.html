@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+
+   <link rel="stylesheet" href="{{ url_for('static', filename='semantic/dist/semantic.min.css') }}">
+   <!--<link rel="stylesheet" href="{{ url_for('static', filename='paper.css') }}">-->
+   <!--<link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">-->
+   <!--<link rel="stylesheet" href="{{ url_for('static', filename='font.css') }}">-->
+   <link rel="stylesheet" href="{{ url_for('static', filename='border.css') }}">
+
+   <script src="{{ url_for('static', filename='jquery/jquery-3.2.1.min.js') }}" ></script>
+   <script src="{{ url_for('static', filename='ractive.js') }}"></script>
+   <script src="{{ url_for('static', filename='semantic/dist/semantic.min.js') }}"></script>
+   <title>{% block title %}layout{% endblock %}</title>
+
+</head>
+<body class="frame fill pink">
+<header></header>
+<body>
+{% block body %}{% endblock %}
+</body>
+<footer></footer>
+{% block script %}{% endblock %}
+</body>
+</html>
