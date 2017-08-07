@@ -1,75 +1,63 @@
-from flask import Flask, render_template, request
+from views import app
+from flask import render_template, request, abort
+from bson import ObjectId
+from views import elements
+from pymongo import errors
+from copy import deepcopy
+from ast import literal_eval
 
-app = Flask(__name__)
-app.config['DEBUG'] = True
-app.config['SECRET_KEY'] = 'very secret key'
-
-
-element_context = {
-    'hooli': 'hoo'
+default = {
+    'title': 'the legendary element',
+    'img': 'localhost:5000/media/default.jpg',
+    'context': {},
 }
 
 
-@app.route('/elements/_', methods=['GET'])
-def element():
-    return render_template('info.html', context=element_context)
-
-
-@app.route('/elements/_/plusUltra', methods=['GET'])
-def element_plus_ultra():
-    try:
+@app.route('/elements/<id>')
+def element_plus_ultra(id):
+    _id = ObjectId(id)
+    values = request.values
+    if 'title' in values and 'description' in values:
         key = request.args['title']
         value = request.args['description']
-
-        element_context[key] = value
-    except:
-        pass
-    return render_template('ainfo.html', context=element_context)
-
-elements = [
-    {
-        'img': 'http://localhost:5000/static/rosemary.jpg',
-        'title': 'Rosemary',
-        'quantity': '3 drops of essential oil',
-        'description': 'this material helps to improve blood circulation so more foods for hair more hair on scalp',
-    },
-    {
-        'img': 'http://localhost:5000/static/lavender.jpg',
-        'title': 'Lavender',
-        'quantity': '5 drops of essential oil',
-        'description': 'this material helps to improve blood circulation so more foods for hair more hair on scalp',
-    },
-    {
-        'img': 'http://localhost:5000/static/chamomilla.jpg',
-        'title': 'rosemary',
-        'quantity': '3 drops of essential oil',
-        'description': 'this material helps to improve blood circulation so more foods for hair more hair on scalp',
-    },
-    {
-        'img': 'http://localhost:5000/static/rosemary.jpg',
-        'title': 'rosemary',
-        'quantity': '3 drops of essential oil',
-        'description': 'this material helps to improve blood circulation so more foods for hair more hair on scalp',
-    },
-]
+        set_element(_id, key, value)
+    plus_ultra = values['plusUltra'] if 'plusUltra' in values else False
+    return get_element(_id, plus_ultra=plus_ultra)
 
 
-@app.route('/components/_', methods=['GET'])
-def component():
-    return render_template('info.html', context=element_context, elements=elements)
-
-
-@app.route('/components/_/plusUltra', methods=['GET'])
-def component_plus_ultra():
+def get_element(_id, plus_ultra=False):
     try:
-        key = request.args['title']
-        value = request.args['description']
-
-        element_context[key] = value
+        _element = elements.find_one({
+            '_id': _id
+        })
+        return render_template('leaf/element.html', element=_element, plus_ultra=plus_ultra)
     except:
-        pass
-    return render_template('ainfo.html', context=element_context, elements=elements)
+        abort(204)
 
 
-if __name__ == '__main__':
-    app.run()
+def set_element(_id, key, value):
+    elements.update_one({'_id': _id}, {
+        '$inc': {
+            'context.%s' % key: value
+        }
+    }, upsert=False)
+
+
+@app.route('/elements/+')
+def create_component():
+    _element = deepcopy(default)
+    values = request.values
+    for key in ['title', 'img', 'context', 'elements']:
+        if key in values:
+            _element[key] = literal_eval(values[key])
+    result = elements.insert_one(_element)
+    return get_element(result.inserted_id, plus_ultra=True)
+
+
+@app.route('/elements/<id>/-')
+def del_element(id):
+    try:
+        elements.delete_one({'_id': ObjectId(id)})
+        abort(200)
+    except:
+        abort(204)

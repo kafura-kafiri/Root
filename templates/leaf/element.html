@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <title>Title</title>
-</head>
-<body>
+{% extends "body/image.html" %}
+{% block info %}
 
-</body>
-</html>
+<div class="ui vertical stripe segment">
+   <div class="ui text container">
+      {% for key, value in context.items() %}
+      <h3 class="ui header">{{ key }}</h3>
+      <p>{{ value }}</p>
+      <a class="ui large button">Read More</a>
+      <h4 class="ui horizontal header divider">
+         <a href="#">Case Studies</a>
+      </h4>
+      {% endfor %}
+   </div>
+
+   {% include "leaf/plusUltra.html" %}
+
+</div>
+
+{% endblock %}

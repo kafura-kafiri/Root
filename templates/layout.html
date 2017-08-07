@@ -3,8 +3,19 @@
 <head>
    <meta charset="UTF-8">
    <title>Title</title>
+   {% include "resources.html" %}
+   <title>{% block title %}layout{% endblock %}</title>
 </head>
 <body>
-
+<header>
+   {% include "body/header.html" %}
+</header>
+<body>
+{% block body %}{% endblock %}
+</body>
+<footer>
+   {% include "body/footer.html" %}
+</footer>
+{% block script %}{% endblock %}
 </body>
 </html>

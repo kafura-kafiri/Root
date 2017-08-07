@@ -4,6 +4,8 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/templates" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/static/pinkPaper" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/static/how" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/documentation" />
       <excludeFolder url="file://$MODULE_DIR$/static" />
     </content>
     <content url="file://$MODULE_DIR$/static/pinkPaper" />
